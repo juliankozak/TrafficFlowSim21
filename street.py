@@ -59,3 +59,8 @@ class Street:
                 self.cars_queue.put(driving_car)
 
 
+    def reset_street_state(self):
+
+        # empty queue:
+        while not self.cars_queue.empty():
+            self.cars_queue.get()

@@ -7,12 +7,11 @@ class Intersection:
     incoming_streets = []
     schedule = []   # [{street_name:"name1", Ti=duration}, {street_name:"name1", Ti=duration}, ... ]
     schedule_duration = 0
-    schedule_current_time = 0
     simulation_time = 0    # simulation starts at t=0
     simulation_manager = None
     debug_messages = False
 
-    def __init__(self, intersection_id, simulation_manager, incoming_streets=[], debug_messages=False, schedule=None):
+    def __init__(self, intersection_id, simulation_manager, incoming_streets=[], debug_messages=False, schedule=None, optimizer=None):
         """
         Constructor of class Intersection:
         :param intersection_id: ID of the intersection (integer)
@@ -24,6 +23,7 @@ class Intersection:
         self.incoming_streets = incoming_streets
         self.simulation_manager = simulation_manager
         self.queues = []
+        self.optimizer = optimizer
 
         if len(incoming_streets) > 0:
             for street in incoming_streets:
@@ -109,7 +109,7 @@ class Intersection:
                 if q['street_name'] == moving_street:
                     current_queue = q['q']
                     if current_queue.qsize() > 0:   # check if a car is in the queue (!)
-                        car = q['q'].get(block=False)
+                        car = q['q'].get()
                     break
 
             if car:
@@ -126,9 +126,25 @@ class Intersection:
                             print("----Car moved to street " + next_street)
                         break
 
+        # store queue lengths to optimizer
+        if self.optimizer:
+            q_lengths = []
+            for q in self.queues:
+                q_lengths.append({'street_name': q['street_name'], 'q_len': q['q'].qsize()})
+            self.optimizer.store_values_in_optimizer(self.intersection_id, q_lengths, self.simulation_time)
+
         #if not initial_step:
             # update simulation time for next round
         self.simulation_time += 1
+
+
+    def reset_intersection_state(self):
+        # reset simulation time:
+        self.simulation_time = 0
+        # empty all queues:
+        for q in self.queues:
+            while not q['q'].empty():
+                q['q'].get()
 
 
 

@@ -15,12 +15,16 @@ class Simulation_manager:
     list_of_streets = []
     list_of_intersections = []
     current_time = 0
+    optimizer = None
 
     debug_messages = False
 
-    def __init__(self, filename, debug_messages=False):
+    def __init__(self, filename, optimizer=None, debug_messages=False):
         self.debug_messages = debug_messages
+        self.optimizer = optimizer
         self.read_input_file_and_create_object_instances(filename)
+        if self.optimizer:
+            self.optimizer.initialize_optimizer(self.list_of_intersections, self.D)
 
 
     def run_simulation_step(self, print_frequency=100):
@@ -70,7 +74,7 @@ class Simulation_manager:
         if not next_intersection:
             # create intersection
             next_intersection = intersection.Intersection(E, self, incoming_streets=[name],
-                                                          debug_messages=self.debug_messages)
+                                                          debug_messages=self.debug_messages, optimizer=self.optimizer)
             self.list_of_intersections.append(next_intersection)
 
         # create the street instance
@@ -150,6 +154,22 @@ class Simulation_manager:
         print("All cars ready to go!")
 
     def run_simulation(self, print_frequency):
+        self.current_time = 0   # reset time to zero
+
+        # reset intersection states
+        for i in self.list_of_intersections:
+            i.reset_intersection_state()
+
+        # reset street states
+        for s in self.list_of_streets:
+            s.reset_street_state()
+
+        # reset car states
+        for c in self.list_of_cars:
+            c.reset_car_state()
+
+        self.get_cars_ready()
+
         print("Start simulation")
         for i in range(self.D):
             self.run_simulation_step(print_frequency)

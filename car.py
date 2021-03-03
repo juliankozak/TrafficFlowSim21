@@ -58,3 +58,7 @@ class Car:
 
         self.points = points
         return self.points
+
+    def reset_car_state(self):
+        self.current_index_in_route = 0
+        self.points = 0
