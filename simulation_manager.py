@@ -44,10 +44,13 @@ class Simulation_manager:
     def read_input_file_and_create_object_instances(self, filename):
         with open(filename) as f:
             self.parse_first_line(f.readline())
+            print("Creating streets and interesections...")
             for i in range(self.S):
                 self.parse_street(f.readline())
+            print("Creating cars...")
             for v in range(self.V):
                 self.parse_cars(f.readline())
+            print("All instances created.")
 
     def parse_first_line(self, first_line):
         vals = first_line.split(" ")
@@ -80,7 +83,8 @@ class Simulation_manager:
         # create the street instance
         s = street.Street(name, L, next_intersection, self,debug_messages=self.debug_messages)
         self.list_of_streets.append(s)
-        print(" Street {} created".format(name))
+        if self.debug_messages:
+            print(" Street {} created".format(name))
 
     def parse_cars(self, line):
         vals = line.split("\n")[0].split(" ")
@@ -90,7 +94,8 @@ class Simulation_manager:
 
         new_car = car.Car(route)
         self.list_of_cars.append(new_car)
-        print(" Created car {}, {}, ...".format(route[0], route[1]))
+        if self.debug_messages:
+            print(" Created car {}, {}, ...".format(route[0], route[1]))
 
     def initialize_all_schedules_uniform(self, value):
         """

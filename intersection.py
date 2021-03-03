@@ -130,11 +130,9 @@ class Intersection:
         if self.optimizer:
             q_lengths = []
             for q in self.queues:
-                q_lengths.append({'street_name': q['street_name'], 'q_len': q['q'].qsize()})
+                q_lengths.append(q['q'].qsize())
             self.optimizer.store_values_in_optimizer(self.intersection_id, q_lengths, self.simulation_time)
 
-        #if not initial_step:
-            # update simulation time for next round
         self.simulation_time += 1
 
 

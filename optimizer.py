@@ -10,6 +10,7 @@ class Optimizer:
                             # example: [[ [2, 3, 0, nan, nan],
                             #            [1, 1, 1,   0,   0],
                             #            [0, 0, 0, nan, nan] ]]
+                            # dtype: np array
 
     mapping = []            # for each intersection, map name of incoming street to index in list
                             # [ {id: 0, incoming_streets: [street-a, street-b, ...]},
@@ -39,34 +40,35 @@ class Optimizer:
 
     def initialize_mapping(self, list_of_intersections):
         for intersection in list_of_intersections:
-            self.mapping.append(
-                {
+            self.mapping.append( [] )
+
+        for intersection in list_of_intersections:
+            self.mapping[intersection.intersection_id] = {
                     'id': intersection.intersection_id,
-                    'incoming_streets': intersection.incoming_streets
+                    'incoming_streets': intersection.incoming_streets   # keeping the same order as list of incoming streets in intersection
                 }
-            )
 
     def get_index_of_incoming_street(self, intersection_id, street_name):
         index = None
         for m in self.mapping:
             if m['id'] == intersection_id:
                 m_list = m['incoming_streets']
-                index = m_list.index(street_name)
+                for index, s in enumerate(m_list):
+                    if s == street_name:
+                        return index
+                    #index = m_list.index(street_name)  # very slow
         return index
 
     def store_values_in_optimizer(self, intersection_id, q_lengths, current_time):
         """
         store the current queue lengths of an intersection
         :param intersection_id
-        :param q_lengths: list of dictionaries [{'street_name': 'street_a', 'q_len': 17}, ...], length must correspond to number of incoming streets
+        :param q_lengths: list of queue lengths, keeping the same order as saved in the intersection list
         :param current_time
         :return:
         """
-        q_lengths_sorted = np.zeros(len(q_lengths))
-        for q in q_lengths:
-            q_lengths_sorted[self.get_index_of_incoming_street(intersection_id, q['street_name'])] = q['q_len']
 
-        self.q_lengths[current_time, intersection_id, :len(q_lengths)] = q_lengths_sorted
+        self.q_lengths[current_time, intersection_id, :len(q_lengths)] = np.array(q_lengths)
 
     def optimizer_step(self):
         """
@@ -84,14 +86,14 @@ class Optimizer:
         print("INFO: method 'optimizer_step' should be overwritten in order to update traffic light schedule")
         pass
 
-    def optimizer_step_basic(self):
+    def optimizer_step_and_load(self):
         schedule_modifications = self.optimizer_step()
         self.load_modified_schedule_into_intersections(schedule_modifications)
 
     def load_modified_schedule_into_intersections(self, modifications):
         print("Loading schedule modifications into intersections ...")
         for intersection_mod in modifications:
-            id = intersection['intersection_id']
+            id = intersection_mod['intersection_id']
 
             for intersection in self.simulation_manager.list_of_intersections:
                 if intersection.intersection_id == id:
