@@ -63,11 +63,12 @@ class Optimizer:
         """
         store the current queue lengths of an intersection
         :param intersection_id
-        :param q_lengths: list of queue lengths, keeping the same order as saved in the intersection list
+        :param q_lengths: list of queue lengths, keeping the same order as saved in the intersection
         :param current_time
         :return:
         """
-
+        #for i in range(len(q_lengths)):
+            #print("current time: {} , id: {} , q_lengths {}".format(current_time, intersection_id, q_lengths[i]))
         self.q_lengths[current_time, intersection_id, :len(q_lengths)] = np.array(q_lengths)
 
     def optimizer_step(self):

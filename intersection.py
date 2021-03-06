@@ -52,7 +52,7 @@ class Intersection:
             total_time_schedule += s['Ti']
 
         if len(set(incoming_streets_schedule)) < len(incoming_streets_schedule):
-            raise ValueError("Intersection {id}: The schedule should contain each street at most once".format(self.intersection_id))
+            raise ValueError("Intersection {}: The schedule should contain each street at most once".format(self.intersection_id))
         self.schedule = schedule
         self.schedule_duration = total_time_schedule
 

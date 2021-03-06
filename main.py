@@ -4,13 +4,13 @@ import strategy_average_queue_length
 import cProfile
 
 experiment = "c"
-print_frequency = 500
+print_frequency = 200
 show_debug_messages = False     # write
 
 filename = "input_data/" + experiment + ".txt"
 out_file_suffix = "OptimizerMatchAvgQueueLength"
 
-N_epoch = 5
+N_epoch = 2
 
 #opt = optimizer.Optimizer()
 opt = strategy_average_queue_length.OptimizerMatchAvgQueueLength()
