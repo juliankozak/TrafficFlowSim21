@@ -1,5 +1,22 @@
 import numpy as np
 
+"""
+Task: Derive a class from Optimizer and implement optimizer_step()
+
+- queue_lengths at all times of all intersections are available in Optimizer (3-dim array)
+- derive new schedule in the given format and return it. 
+  Only intersections with an new schedule will be update. All other intersections keep their old schedule.
+   return:
+    [
+          {'intersection_id': 1,
+               'new_schedule': [ {street_name:"name1", Ti=duration}, {street_name:"name1", Ti=duration}}]
+          },
+          { 'intersection_id': 2,
+                'new_schedule': [...] 
+          }
+     ]
+"""
+
 
 class Optimizer:
 

@@ -1,7 +1,7 @@
 import simulation_manager
 import optimizer
 import strategy_average_queue_length
-import cProfile
+
 
 experiment = "c"
 print_frequency = 200
@@ -10,9 +10,11 @@ show_debug_messages = False     # write
 filename = "input_data/" + experiment + ".txt"
 out_file_suffix = "OptimizerMatchAvgQueueLength"
 
+# Number of iterations
 N_epoch = 2
 
-#opt = optimizer.Optimizer()
+# Replace optimizer with implemented class derived from Optimizer
+# opt = optimizer.Optimizer() # basic for demo, optimizer does not do anything.
 opt = strategy_average_queue_length.OptimizerMatchAvgQueueLength()
 
 sim_manager = simulation_manager.Simulation_manager(filename, optimizer=opt, debug_messages=show_debug_messages)
@@ -25,7 +27,6 @@ sim_manager.initialize_all_schedules_uniform(2)
 for i in range(N_epoch):
     print("** EPOCH {}: **".format(i))
     sim_manager.run_simulation(print_frequency)
-    #cProfile.run('sim_manager.run_simulation(print_frequency)')
     total_points = sim_manager.calculate_points()
     print("Total points: {}".format(total_points))
 

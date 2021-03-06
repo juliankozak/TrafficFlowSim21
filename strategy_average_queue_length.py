@@ -3,6 +3,14 @@ import numpy as np
 import pickle
 import datetime
 
+"""
+    very basic first try:
+    Starting point: schedule initialized uniformly, ex. Ti = 2 for all intersections
+    step(): keep the initial schedule and ony increase the duration Ti for incoming streets, where the average queue length
+    is > 0 by ceil(avg_queue_length). Averaging happens over the entire simutalation duration, so avg queue length might be 
+    very small.  
+"""
+
 class OptimizerMatchAvgQueueLength(Optimizer):
 
     def optimizer_step(self):
