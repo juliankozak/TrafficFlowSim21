@@ -1,4 +1,5 @@
 import queue
+import numpy as np
 
 
 class Intersection:
@@ -10,6 +11,9 @@ class Intersection:
     simulation_time = 0    # simulation starts at t=0
     simulation_manager = None
     debug_messages = False
+    traffic_stats = None
+    mapping = {} # map incoming street name to index in queues
+
 
     def __init__(self, intersection_id, simulation_manager, incoming_streets=[], debug_messages=False, schedule=None, optimizer=None):
         """
@@ -71,6 +75,11 @@ class Intersection:
             q = {'street_name': street_name, 'q': queue.Queue()}
             self.queues.append(q)
 
+    def initialize_traffic_stats(self):
+        self.traffic_stats = np.zeros(len(self.incoming_streets))
+        for index, in_street in enumerate(self.incoming_streets):
+            self.mapping[in_street] = index
+
     def add_arriving_car(self, car, street):
         """
         Add a car to the queue of an incoming street of an intersection
@@ -110,6 +119,9 @@ class Intersection:
                     current_queue = q['q']
                     if current_queue.qsize() > 0:   # check if a car is in the queue (!)
                         car = q['q'].get()
+
+                        # todo update statistics
+                        self.traffic_stats[self.mapping[moving_street]] += int(1)
                     break
 
             if car:

@@ -26,6 +26,9 @@ class Simulation_manager:
         if self.optimizer:
             self.optimizer.initialize_optimizer(self.list_of_intersections, self.D)
 
+        # todo
+        for cu in self.list_of_intersections:
+            cu.initialize_traffic_stats()
 
     def run_simulation_step(self, print_frequency=100):
 
