@@ -37,7 +37,8 @@ class OptimizerRemoveUselessIncomingStreets(Optimizer):
                     # keep this incoming street in schedule
                     current_schedule = [sch for sch in current_intersection.schedule if sch['street_name'] == incoming_street][0]
                 else:
-                    print(" -- Intersection {} remove incoming street from schedule: {} (index = {})".format(current_intersection.intersection_id, incoming_street,current_intersection.mapping[incoming_street] ))
+                    #print(" -- Intersection {} remove incoming street from schedule: {} (index = {})".format(current_intersection.intersection_id, incoming_street,current_intersection.mapping[incoming_street] ))
+                    pass
 
                 if current_schedule is not None:
                     schedule_update_int.append(current_schedule)
@@ -56,7 +57,7 @@ class OptimizerRemoveUselessIncomingStreets(Optimizer):
             outline += "\n"
             text_file_lines.append(outline)
 
-        filename = "debug_data/d_traffic_stats_{}.csv".format(datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S"))
+        filename = "debug_data/traffic_stats_{}.csv".format(datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S"))
         with open(filename, "w") as f:
             for line in text_file_lines:
                 f.write(line)
