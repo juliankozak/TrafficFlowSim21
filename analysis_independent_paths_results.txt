@@ -1,0 +1,38 @@
+Experiment  a
+ Total number of cars = 2
+ Number of solo paths = 0
+ -> Percentage of solo paths: 0.0 %
+
+
+Experiment  b
+ Total number of cars = 1000
+ Number of solo paths = 2
+ -> Percentage of solo paths: 0.2 %
+
+
+Experiment  c
+ Total number of cars = 1000
+ Number of solo paths = 10
+ -> Percentage of solo paths: 1.0 %
+
+
+Experiment  d
+ Total number of cars = 1000
+ Number of solo paths = 0
+ -> Percentage of solo paths: 0.0 %
+
+
+Experiment  e
+ Total number of cars = 1000
+ Number of solo paths = 0
+ -> Percentage of solo paths: 0.0 %
+
+
+Experiment  f
+ Total number of cars = 1000
+ Number of solo paths = 0
+ -> Percentage of solo paths: 0.0 %
+
+ 
+
+
